@@ -17,18 +17,20 @@ import java.util.ArrayList;
 
 public class CopyAdapter extends RecyclerView.Adapter<CopyAdapter.DataObjectHolder> {
 
-
+    private static String LOG_TAG = "MyRecyclerViewAdapter";
+    private ArrayList<CopyData> mDataset;
+    private static MyClickListener myClickListener;
+    private Activity act;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
-        TextView title, videoId;
-        ImageView thumbailView, onlineOfflineView;
+        TextView copiedText, dateTime, category;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            thumbailView = (ImageView) itemView.findViewById(R.id.thumbnail_view);
-            onlineOfflineView = (ImageView) itemView.findViewById(R.id.image_online_offline);
-            title = (TextView) itemView.findViewById(R.id.tv_video_name);
+            copiedText = (TextView) itemView.findViewById(R.id.tv_copied_text);
+            dateTime = (TextView) itemView.findViewById(R.id.tv_datetime);
+            category = (TextView) itemView.findViewById(R.id.tv_category);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -45,7 +47,7 @@ public class CopyAdapter extends RecyclerView.Adapter<CopyAdapter.DataObjectHold
         this.myClickListener = myClickListener;
     }
 
-    public VideoListAdapter(Activity act, ArrayList<VideoListData> myDataset) {
+    public CopyAdapter(Activity act, ArrayList<CopyData> myDataset) {
         this.act = act;
         mDataset = myDataset;
     }
@@ -54,7 +56,7 @@ public class CopyAdapter extends RecyclerView.Adapter<CopyAdapter.DataObjectHold
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_single, parent, false);
+                .inflate(R.layout.item_copied, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -63,19 +65,13 @@ public class CopyAdapter extends RecyclerView.Adapter<CopyAdapter.DataObjectHold
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
 //        Log.d("HIS ADAPTER", mDataset.get(position).getSalonName());
-        holder.title.setText(mDataset.get(position).getTitle());
+        holder..setText(mDataset.get(position).getTitle());
 
-        ImageLoader imageLoader = ImageLoader.getInstance(); // Get singleton instance
-        imageLoader.displayImage(mDataset.get(position).getThumbnailUrl(), holder.thumbailView);
-        if(mDataset.get(position).getVideoId().equals("1")) {
-            holder.onlineOfflineView.setImageResource(R.drawable.on_phone);
-        } else {
-            holder.onlineOfflineView.setImageResource(R.drawable.on_youtube);
-        }
+//
 
     }
 
-    public void addItem(VideoListData dataObj, int index) {
+    public void addItem(CopyData dataObj, int index) {
         mDataset.add(dataObj);
         notifyItemInserted(index);
     }
