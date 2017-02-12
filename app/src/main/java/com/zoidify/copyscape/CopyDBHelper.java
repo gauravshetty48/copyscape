@@ -19,7 +19,7 @@ import java.util.List;
  * Created by gaurav on 13-12-2016.
  */
 
-abstract class ChatDBHelper extends SQLiteOpenHelper {
+public class CopyDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "copyscape.db";
     private static final int DATABASE_VERSION = 1;
     public static final String TABLE_NAME = "Chat History";
@@ -29,7 +29,7 @@ abstract class ChatDBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DATE = "date";
     public static final String COLUMN_FAVOURITE = "pinned";
 
-    public ChatDBHelper(Context context) {
+    public CopyDBHelper(Context context) {
         super(context, DATABASE_NAME , null, DATABASE_VERSION);
     }
 
@@ -67,7 +67,14 @@ abstract class ChatDBHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME, cv, COLUMN_ID + "= ?", new String[] {String.valueOf(rowId)});
 
         return true;
+    }
 
+    public boolean deleteItem(int rowId) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        db.delete(TABLE_NAME, COLUMN_ID + "= ?", new String[] {String.valueOf(rowId)});
+
+        return true;
     }
 
     public List<CopyData> getHistory() {

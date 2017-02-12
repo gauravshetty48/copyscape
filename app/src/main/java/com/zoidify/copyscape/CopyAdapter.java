@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,12 +26,14 @@ public class CopyAdapter extends RecyclerView.Adapter<CopyAdapter.DataObjectHold
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         TextView copiedText, dateTime, category;
+        ImageButton pinned;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             copiedText = (TextView) itemView.findViewById(R.id.tv_copied_text);
             dateTime = (TextView) itemView.findViewById(R.id.tv_datetime);
             category = (TextView) itemView.findViewById(R.id.tv_category);
+            pinned = (ImageButton) itemView.findViewById(R.id.ib_fav);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -64,10 +67,12 @@ public class CopyAdapter extends RecyclerView.Adapter<CopyAdapter.DataObjectHold
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-//        Log.d("HIS ADAPTER", mDataset.get(position).getSalonName());
-        holder..setText(mDataset.get(position).getTitle());
-
-//
+        holder.copiedText.setText(mDataset.get(position).getCopiedText());
+        holder.category.setText(mDataset.get(position).getCategory());
+        holder.dateTime.setText(mDataset.get(position).getDateTime());
+        if(mDataset.get(position).getPinned()) {
+            holder.pinned.setImageResource(R.drawable.ic_fav_checked);
+        }
 
     }
 

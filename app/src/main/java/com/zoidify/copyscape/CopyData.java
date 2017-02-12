@@ -6,39 +6,39 @@ package com.zoidify.copyscape;
 
 public class CopyData {
 
-    public String getTitle() {
-        return title;
+    public String getCopiedText() {
+        return copiedText;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCopiedText(String copiedText) {
+        this.copiedText = copiedText;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getCategory() {
+        return category;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public String getVideoId() {
-        return videoId;
+    public String getDateTime() {
+        return datetime;
     }
 
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
+    public void setDateTime(String datetime) {
+        this.datetime = datetime;
     }
 
-    public long getVideoPosition() {
-        return videoPosition;
+    public boolean getPinned() {
+        return pinned;
     }
 
-    public void setVideoPosition(long videoPosition) {
-        this.videoPosition = videoPosition;
+    public void setPinned(boolean pinned) {
+        this.pinned = pinned;
     }
 
 
-    private String title, thumbnailUrl, videoId;
-    private long videoPosition;
+    private String copiedText, category, datetime;
+    private boolean pinned;
 }
