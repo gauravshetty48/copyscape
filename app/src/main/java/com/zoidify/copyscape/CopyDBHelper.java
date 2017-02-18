@@ -6,6 +6,7 @@ package com.zoidify.copyscape;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -22,7 +23,7 @@ import java.util.List;
 public class CopyDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "copyscape.db";
     private static final int DATABASE_VERSION = 1;
-    public static final String TABLE_NAME = "Chat History";
+    public static final String TABLE_NAME = "History";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_COPIED_TEXT = "copied_text";
     public static final String COLUMN_CATEGORY = "category";
@@ -38,7 +39,7 @@ public class CopyDBHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE " + TABLE_NAME + "(" +
                 COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_CATEGORY + " TEXT, " +
-                COLUMN_COPIED_TEXT + "TEXT, " +
+                COLUMN_COPIED_TEXT + " TEXT, " +
                 COLUMN_DATE + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                 COLUMN_FAVOURITE + " BOOLEAN)"
         );
@@ -77,11 +78,23 @@ public class CopyDBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public List<CopyData> getHistory() {
-        List<CopyData> copiedItems = new ArrayList<CopyData>();
-
+    public ArrayList<CopyData> getHistory() {
+        ArrayList<CopyData> copiedItems = new ArrayList<CopyData>();
+        SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TABLE_NAME;
+        Cursor cursor = db.rawQuery(selectQuery, null);
 
+        if (cursor.moveToFirst()) {
+            do {
+                CopyData copyData = new CopyData();
+                copyData.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_CATEGORY)));
+                copyData.setCopiedText(cursor.getString(cursor.getColumnIndex(COLUMN_COPIED_TEXT)));
+                copyData.setDateTime(cursor.getString(cursor.getColumnIndex(COLUMN_DATE)));
+                copyData.setPinned(cursor.getInt(cursor.getColumnIndex(COLUMN_FAVOURITE)) > 0);
+                // Adding copied data to list
+                copiedItems.add(copyData);
+            } while (cursor.moveToNext());
+        }
 
         return copiedItems;
     }
